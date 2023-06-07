@@ -49,6 +49,7 @@ public class Start extends javax.swing.JFrame {
         jLabel1.setText("Archivo inicial");
         PanelArchivoInicial.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 80, 20));
 
+        PanelTextArchivoInicial.setEditable(false);
         jScrollPane1.setViewportView(PanelTextArchivoInicial);
 
         PanelArchivoInicial.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 48, 590, 220));
@@ -66,6 +67,7 @@ public class Start extends javax.swing.JFrame {
         PanelArchivoProcesado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PanelArchivoProcesado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        PanelTextArchivoProcesado.setEditable(false);
         jScrollPane2.setViewportView(PanelTextArchivoProcesado);
 
         PanelArchivoProcesado.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 590, 230));
@@ -119,6 +121,7 @@ public class Start extends javax.swing.JFrame {
         PanelSalidaMensajes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PanelSalidaMensajes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTextPane1.setEditable(false);
         jScrollPane4.setViewportView(jTextPane1);
 
         PanelSalidaMensajes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 950, 80));
