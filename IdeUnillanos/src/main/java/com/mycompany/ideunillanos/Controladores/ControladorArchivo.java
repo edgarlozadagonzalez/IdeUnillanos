@@ -1,27 +1,31 @@
 package com.mycompany.ideunillanos.Controladores;
+
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
-import com.mycompany.ideunillanos.Servicios.IServicioArchivo;
 import com.mycompany.ideunillanos.Servicios.ServicioArchivo;
 import java.io.IOException;
+import com.mycompany.ideunillanos.Servicios.IServicioArchivo;
 
-public class ControladorArchivo{
-     
-    private final IServicioArchivo iServicioArchivo;
-    private static ControladorArchivo controladorArchivo; 
+public class ControladorArchivo {
+
+    private final IServicioArchivo iArchivo;
+    private static ControladorArchivo controladorArchivo;
 
     private ControladorArchivo() {
-        iServicioArchivo = new ServicioArchivo();
+        iArchivo = new ServicioArchivo();
     }
 
-    public static ControladorArchivo getInstance(){
-        if(controladorArchivo == null){
+    public static ControladorArchivo getInstance() {
+        if (controladorArchivo == null) {
             controladorArchivo = new ControladorArchivo();
         }
         return controladorArchivo;
     }
-    
-    public String cargar(ArchivoDTO archivoDTO) throws IOException {
-       return  iServicioArchivo.cargar(archivoDTO);
+
+    public void cargar(ArchivoDTO archivoDTO) throws IOException {
+        iArchivo.cargar(archivoDTO);
     }
-    
+
+    public String getContenido() {
+        return iArchivo.getContenido();
+    }
 }

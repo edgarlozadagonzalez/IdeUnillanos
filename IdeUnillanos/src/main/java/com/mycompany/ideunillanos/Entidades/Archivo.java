@@ -1,13 +1,14 @@
 package com.mycompany.ideunillanos.Entidades;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class Archivo{
     
     private File archivo;
     private String nombre;
     private String extension;
-    private String path;
+    private Path path;
     private String contenido;
 
     public Archivo(File archivo) {
@@ -15,7 +16,7 @@ public class Archivo{
         String[] info = archivo.getName().split("\\.");
         this.nombre = info[0];
         this.extension = info[1];
-        this.path = archivo.getPath();
+        this.path = archivo.toPath();
     }
 
     public File getArchivo() {
@@ -30,7 +31,7 @@ public class Archivo{
         return extension;
     }
 
-    public String getPath() {
+    public Path getPath() {
         return path;
     }
 

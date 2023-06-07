@@ -1,10 +1,13 @@
 package com.mycompany.ideunillanos.Vistas;
 
 import com.mycompany.ideunillanos.Controladores.ControladorArchivo;
+import com.mycompany.ideunillanos.Controladores.ControladorPlugin;
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -12,6 +15,7 @@ public class Start extends javax.swing.JFrame {
 
     private ArchivoDTO archivoDTO;
     private final ControladorArchivo controladorArchivo = ControladorArchivo.getInstance();
+    private final ControladorPlugin controladorPlugin = ControladorPlugin.getInstance();
 
     public Start() {
         initComponents();
@@ -157,9 +161,10 @@ public class Start extends javax.swing.JFrame {
             File file = fileChooser.getSelectedFile();
             archivoDTO = new ArchivoDTO(file);
             try {
-                String resultado = controladorArchivo.cargar(archivoDTO);
-                PanelTextSalidaMensajes.setText("Archivo cargado correctamente: "+file.getAbsolutePath());
-                PanelTextArchivoInicial.setText(resultado);
+                controladorArchivo.cargar(archivoDTO);
+                PanelTextSalidaMensajes.setText("Archivo cargado correctamente: " + file.getAbsolutePath());
+                String contenido = controladorArchivo.getContenido();
+                PanelTextArchivoInicial.setText(contenido);
             } catch (IOException e) {
                 PanelTextSalidaMensajes.setText("Error al cargar el archivo: " + e.getMessage());
                 PanelTextArchivoInicial.setText("");
@@ -171,7 +176,30 @@ public class Start extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCargarArchivoActionPerformed
 
     private void btnCargarComponenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarComponenteActionPerformed
-        // TODO add your handling code here:
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos JAR", "jar"));
+
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            archivoDTO = new ArchivoDTO(file);
+            try {
+                controladorPlugin.cargarPlugin(archivoDTO);
+                PanelTextSalidaMensajes.setText("Componente cargado correctamente: " + file.getAbsolutePath());
+                DefaultListModel<String> model = new DefaultListModel<>();
+                for (Map.Entry<String, File> entry : controladorPlugin.obtenerPlugins().entrySet()) {
+                    model.addElement(entry.getKey());
+                }
+                ListaComponentes.setModel(model);
+            } catch (IOException e) {
+                PanelTextSalidaMensajes.setText("Error al cargar el componente: " + e.getMessage());
+                PanelTextArchivoInicial.setText("");
+            }
+        } else {
+            PanelTextSalidaMensajes.setText("No se seleccionó ningún componente");
+        }
     }//GEN-LAST:event_btnCargarComponenteActionPerformed
 
     private void btnEjecutarComponenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarComponenteActionPerformed

@@ -12,7 +12,7 @@ public class ServicioArchivo implements IServicioArchivo {
     private Archivo archivo;
 
     @Override
-    public String cargar(ArchivoDTO archivoDTO) throws IOException {
+    public void cargar(ArchivoDTO archivoDTO) throws IOException {
         StringBuilder contenido = new StringBuilder();
         archivo = new Archivo(archivoDTO.getArchivoDTO());
         
@@ -27,9 +27,13 @@ public class ServicioArchivo implements IServicioArchivo {
                 contenido.append("\n");
             }
             archivo.setContenido(contenido.toString());
-            return archivo.getContenido();
         } catch (IOException e) {
             throw e;
         }
+    }
+
+    @Override
+    public String getContenido() {
+        return archivo.getContenido();
     }
 }
