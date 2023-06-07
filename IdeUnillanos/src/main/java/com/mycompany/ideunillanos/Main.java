@@ -1,6 +1,8 @@
-package com.mycompany.unillanoside.vistas;
+package com.mycompany.ideunillanos;
 
-public class UnillanosIDE {
+import com.mycompany.ideunillanos.vistas.Start;
+
+public class Main {
 
     public static void main(String[] args) {
         Start ventana = new Start();
