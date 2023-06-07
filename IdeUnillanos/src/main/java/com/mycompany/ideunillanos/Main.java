@@ -1,6 +1,6 @@
 package com.mycompany.ideunillanos;
 
-import com.mycompany.ideunillanos.vistas.Start;
+import com.mycompany.ideunillanos.Vistas.Start;
 
 public class Main {
 

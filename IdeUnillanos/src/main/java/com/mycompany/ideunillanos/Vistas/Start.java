@@ -1,6 +1,17 @@
-package com.mycompany.ideunillanos.vistas;
+package com.mycompany.ideunillanos.Vistas;
+
+import com.mycompany.ideunillanos.Controladores.ControladorArchivo;
+import com.mycompany.ideunillanos.DTO.ArchivoDTO;
+
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Start extends javax.swing.JFrame {
+
+    private ArchivoDTO archivoDTO;
+    private final ControladorArchivo controladorArchivo = ControladorArchivo.getInstance();
 
     public Start() {
         initComponents();
@@ -33,7 +44,7 @@ public class Start extends javax.swing.JFrame {
         btnEjecutarComponente = new javax.swing.JButton();
         PanelSalidaMensajes = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        PanelTextSalidaMensajes = new javax.swing.JTextPane();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,8 +132,8 @@ public class Start extends javax.swing.JFrame {
         PanelSalidaMensajes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PanelSalidaMensajes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextPane1.setEditable(false);
-        jScrollPane4.setViewportView(jTextPane1);
+        PanelTextSalidaMensajes.setEditable(false);
+        jScrollPane4.setViewportView(PanelTextSalidaMensajes);
 
         PanelSalidaMensajes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 950, 80));
 
@@ -137,7 +148,26 @@ public class Start extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarArchivoActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos Java", "java"));
+
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            archivoDTO = new ArchivoDTO(file);
+            try {
+                String resultado = controladorArchivo.cargar(archivoDTO);
+                PanelTextSalidaMensajes.setText("Archivo cargado correctamente: "+file.getAbsolutePath());
+                PanelTextArchivoInicial.setText(resultado);
+            } catch (IOException e) {
+                PanelTextSalidaMensajes.setText("Error al cargar el archivo: " + e.getMessage());
+                PanelTextArchivoInicial.setText("");
+            }
+        } else {
+            PanelTextSalidaMensajes.setText("No se seleccionó ningún archivo");
+            PanelTextArchivoInicial.setText("");
+        }
     }//GEN-LAST:event_btnCargarArchivoActionPerformed
 
     private void btnCargarComponenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarComponenteActionPerformed
@@ -159,6 +189,7 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JPanel PanelSalidaMensajes;
     private javax.swing.JTextPane PanelTextArchivoInicial;
     private javax.swing.JTextPane PanelTextArchivoProcesado;
+    private javax.swing.JTextPane PanelTextSalidaMensajes;
     private javax.swing.JButton btnCargarArchivo;
     private javax.swing.JButton btnCargarComponente;
     private javax.swing.JButton btnEjecutarComponente;
@@ -171,6 +202,6 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
+
 }
