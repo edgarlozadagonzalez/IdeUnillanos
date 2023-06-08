@@ -216,8 +216,10 @@ public class Start extends javax.swing.JFrame {
             String contenido = ControladorArchivo.getInstance().getContenido();
             try {
                 String resultado = controladorPlugin.ejecutarPlugin(componenteSeleccionado, contenido);
+                System.out.println(resultado);
+                PanelTextArchivoProcesado.setContentType("text/html");
                 PanelTextArchivoProcesado.setText(resultado);
-                PanelTextSalidaMensajes.setText("Componente: "+componenteSeleccionado+" ejecutado con exito.");
+                PanelTextSalidaMensajes.setText("Componente: " + componenteSeleccionado + " ejecutado con exito.");
             } catch (Exception ex) {
                 PanelTextSalidaMensajes.setText("Error al ejecutar el componente: " + ex.getMessage());
                 PanelTextArchivoInicial.setText("");
