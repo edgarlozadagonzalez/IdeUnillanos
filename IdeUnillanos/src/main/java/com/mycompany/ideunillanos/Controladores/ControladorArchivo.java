@@ -1,9 +1,9 @@
 package com.mycompany.ideunillanos.Controladores;
 
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
-import com.mycompany.ideunillanos.Servicios.ServicioArchivo;
 import java.io.IOException;
-import com.mycompany.ideunillanos.Servicios.IServicioArchivo;
+import com.mycompany.ideunillanos.ContratosInterfaces.IServicioArchivo;
+import com.mycompany.ideunillanos.fabrica.Fabrica;
 
 public class ControladorArchivo {
 
@@ -11,7 +11,7 @@ public class ControladorArchivo {
     private static ControladorArchivo controladorArchivo;
 
     private ControladorArchivo() {
-        iArchivo = new ServicioArchivo();
+        iArchivo = Fabrica.inicializarFactory().factoryServiceArchivo();
     }
 
     public static ControladorArchivo getInstance() {

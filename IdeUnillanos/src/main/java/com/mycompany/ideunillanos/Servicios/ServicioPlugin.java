@@ -1,5 +1,6 @@
 package com.mycompany.ideunillanos.Servicios;
 
+import com.mycompany.ideunillanos.ContratosInterfaces.IServicioPlugin;
 import com.mycompany.api.IPlugin;
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
 import com.mycompany.ideunillanos.Entidades.Archivo;
@@ -14,12 +15,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiciosPlugin {
+public class ServicioPlugin implements IServicioPlugin {
 
     private Map<String, File> plugins = new HashMap<>();
     private final String rutaPlugins = "../plugins/";
     private Archivo archivo;
 
+    @Override
     public void cargar(ArchivoDTO archivoDTO) throws IOException {
         archivo = new Archivo(archivoDTO.getArchivoDTO());
         try {
@@ -42,6 +44,7 @@ public class ServiciosPlugin {
         plugins.put(archivo.getNombre(), archivo.getArchivo());
     }
 
+    @Override
     public Map<String, File> obtenerPlugins() {
         return plugins;
     }
@@ -57,6 +60,7 @@ public class ServiciosPlugin {
         return archivo;
     }
 
+    @Override
     public String ejecutarPlugin(String nombrePlugin, String contenido) throws Exception {
         archivo = buscarPluginNombre(nombrePlugin);
         try {

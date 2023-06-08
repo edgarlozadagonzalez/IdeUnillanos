@@ -1,4 +1,4 @@
-package com.mycompany.ideunillanos.Servicios;
+package com.mycompany.ideunillanos.ContratosInterfaces;
 
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
 import java.io.IOException;

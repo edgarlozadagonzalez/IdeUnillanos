@@ -1,5 +1,6 @@
 package com.mycompany.ideunillanos.Servicios;
 
+import com.mycompany.ideunillanos.ContratosInterfaces.IServicioArchivo;
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
 import com.mycompany.ideunillanos.Entidades.Archivo;
 import java.io.BufferedReader;

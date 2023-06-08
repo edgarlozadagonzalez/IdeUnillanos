@@ -212,6 +212,7 @@ public class Start extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCargarComponenteActionPerformed
 
     private void btnEjecutarComponenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarComponenteActionPerformed
+        PanelTextSalidaMensajes.setText("");
         if (archivoDTO.getArchivoDTO() != null) {
             String contenido = ControladorArchivo.getInstance().getContenido();
             try {

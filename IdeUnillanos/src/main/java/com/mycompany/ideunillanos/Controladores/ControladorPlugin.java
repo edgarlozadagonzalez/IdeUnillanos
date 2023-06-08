@@ -1,7 +1,9 @@
 package com.mycompany.ideunillanos.Controladores;
 
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
-import com.mycompany.ideunillanos.Servicios.ServiciosPlugin;
+import com.mycompany.ideunillanos.ContratosInterfaces.IServicioPlugin;
+import com.mycompany.ideunillanos.fabrica.Fabrica;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -9,10 +11,10 @@ import java.util.Map;
 public class ControladorPlugin {
 
     private static ControladorPlugin controladorPlugin;
-    private final ServiciosPlugin serviciosPlugin;
+    private final IServicioPlugin IserviciosPlugin;
 
-    public ControladorPlugin() {
-        this.serviciosPlugin = new ServiciosPlugin();
+    private ControladorPlugin() {
+        this.IserviciosPlugin = Fabrica.inicializarFactory().factoryServicePlugin();
     }
 
     public static ControladorPlugin getInstance() {
@@ -23,14 +25,14 @@ public class ControladorPlugin {
     }
 
     public void cargarPlugin(ArchivoDTO archivoDTO) throws IOException {
-        serviciosPlugin.cargar(archivoDTO);
+        IserviciosPlugin.cargar(archivoDTO);
     }
 
     public Map<String, File> obtenerPlugins() {
-        return serviciosPlugin.obtenerPlugins();
+        return IserviciosPlugin.obtenerPlugins();
     }
 
     public String ejecutarPlugin(String nombrePlugin, String contenido) throws Exception {
-        return serviciosPlugin.ejecutarPlugin(nombrePlugin, contenido);
+        return IserviciosPlugin.ejecutarPlugin(nombrePlugin, contenido);
     }
 }
