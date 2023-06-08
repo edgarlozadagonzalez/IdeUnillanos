@@ -13,9 +13,9 @@ public class Archivo{
 
     public Archivo(File archivo) {
         this.archivo = archivo;
-        String[] info = archivo.getName().split("\\.");
-        this.nombre = info[0];
-        this.extension = info[1];
+        this.nombre = archivo.getName();
+        int indicePunto = nombre.lastIndexOf(".");
+        this.extension = nombre.substring(indicePunto + 1);
         this.path = archivo.toPath();
     }
 

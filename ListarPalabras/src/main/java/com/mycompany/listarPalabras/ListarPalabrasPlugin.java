@@ -1,6 +1,5 @@
 package com.mycompany.listarPalabras;
-
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +7,7 @@ import java.util.regex.Pattern;
 public class ListarPalabrasPlugin {
 
     public static String listarPalabrasEncontradas(String input) {
-        Set<String> palabrasUnicas = new HashSet<>();
+        Set<String> palabrasUnicas = new LinkedHashSet<>();
 
         Pattern patron = Pattern.compile("\\b[a-zA-Z]+\\b");
         Matcher matcher = patron.matcher(input);
@@ -20,7 +19,7 @@ public class ListarPalabrasPlugin {
 
         StringBuilder resultado = new StringBuilder();
         for (String palabra : palabrasUnicas) {
-            resultado.append(palabra).append(", ");
+            resultado.append(palabra).append("\n");
         }
 
         return resultado.toString();

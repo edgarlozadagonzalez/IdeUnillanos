@@ -3,16 +3,19 @@ package com.mycompany.ideunillanos.Vistas;
 import com.mycompany.ideunillanos.Controladores.ControladorArchivo;
 import com.mycompany.ideunillanos.Controladores.ControladorPlugin;
 import com.mycompany.ideunillanos.DTO.ArchivoDTO;
+import java.awt.Color;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Start extends javax.swing.JFrame {
 
@@ -25,6 +28,18 @@ public class Start extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Editor de Texto - Unillanos V1.0");
+        setVisible(true);
+
+        StyledDocument doc = PanelTextSalidaMensajes.getStyledDocument();
+        PanelTextSalidaMensajes.setBackground(Color.BLACK);
+        Style estiloCorrecto = PanelTextSalidaMensajes.addStyle("Correcto", null);
+        StyleConstants.setForeground(estiloCorrecto, Color.GREEN);
+
+        Style estiloError = PanelTextSalidaMensajes.addStyle("Error", null);
+        StyleConstants.setForeground(estiloError, Color.RED);
+
+        Style estiloAdvertencia = PanelTextSalidaMensajes.addStyle("Advertencia", null);
+        StyleConstants.setForeground(estiloAdvertencia, Color.YELLOW);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,9 +53,9 @@ public class Start extends javax.swing.JFrame {
         PanelTextArchivoInicial = new javax.swing.JTextPane();
         btnCargarArchivo = new javax.swing.JButton();
         PanelArchivoProcesado = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        PanelTextArchivoProcesado = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        PanelTextArchivoProcesado = new javax.swing.JEditorPane();
         PanelCargarComponente = new javax.swing.JPanel();
         btnCargarComponente = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -86,13 +101,13 @@ public class Start extends javax.swing.JFrame {
         PanelArchivoProcesado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PanelArchivoProcesado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        PanelTextArchivoProcesado.setEditable(false);
-        jScrollPane2.setViewportView(PanelTextArchivoProcesado);
-
-        PanelArchivoProcesado.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 590, 230));
-
         jLabel2.setText("Archivo procesado");
         PanelArchivoProcesado.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 20));
+
+        PanelTextArchivoProcesado.setEditable(false);
+        jScrollPane5.setViewportView(PanelTextArchivoProcesado);
+
+        PanelArchivoProcesado.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 590, 230));
 
         PanelPrincipal.add(PanelArchivoProcesado, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 610, 260));
 
@@ -171,15 +186,18 @@ public class Start extends javax.swing.JFrame {
             archivoDTO = new ArchivoDTO(file);
             try {
                 controladorArchivo.cargar(archivoDTO);
-                PanelTextSalidaMensajes.setText("Archivo cargado correctamente: " + file.getAbsolutePath());
                 String contenido = controladorArchivo.getContenido();
+                String mensaje = "Archivo cargado correctamente: " + file.getAbsolutePath();
+                mensajesSalida(mensaje, "Correcto");
                 PanelTextArchivoInicial.setText(contenido);
             } catch (IOException e) {
-                PanelTextSalidaMensajes.setText("Error al cargar el archivo: " + e.getMessage());
+                String mensaje = "\nError al cargar el archivo: " + e.getMessage();
+                mensajesSalida(mensaje, "Error");
                 PanelTextArchivoInicial.setText("");
             }
         } else {
-            PanelTextSalidaMensajes.setText("No se seleccionó ningún archivo");
+            String mensaje = "\nNo se seleccionó ningún archivo";
+            mensajesSalida(mensaje, "Advertencia");
             PanelTextArchivoInicial.setText("");
         }
     }//GEN-LAST:event_btnCargarArchivoActionPerformed
@@ -196,36 +214,47 @@ public class Start extends javax.swing.JFrame {
             archivoDTO = new ArchivoDTO(file);
             try {
                 controladorPlugin.cargarPlugin(archivoDTO);
-                PanelTextSalidaMensajes.setText("Componente cargado correctamente: " + file.getAbsolutePath());
+                String mensaje = "\nComponente cargado correctamente:" + file.getAbsolutePath();
+                mensajesSalida(mensaje, "Correcto");
                 DefaultListModel<String> model = new DefaultListModel<>();
                 for (Map.Entry<String, File> entry : controladorPlugin.obtenerPlugins().entrySet()) {
                     model.addElement(entry.getKey());
                 }
                 ListaComponentes.setModel(model);
             } catch (IOException e) {
-                PanelTextSalidaMensajes.setText("Error al cargar el componente: " + e.getMessage());
-                PanelTextArchivoInicial.setText("");
+                String mensaje = "\nError al cargar el componente: " + e.getMessage();
+                mensajesSalida(mensaje, "Error");
             }
         } else {
-            PanelTextSalidaMensajes.setText("No se seleccionó ningún componente");
+            String mensaje = "\nNo se seleccionó ningún componente";
+            mensajesSalida(mensaje, "Advertencia");
         }
     }//GEN-LAST:event_btnCargarComponenteActionPerformed
 
     private void btnEjecutarComponenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarComponenteActionPerformed
-        PanelTextSalidaMensajes.setText("");
-        if (archivoDTO.getArchivoDTO() != null) {
-            String contenido = ControladorArchivo.getInstance().getContenido();
-            try {
-                String resultado = controladorPlugin.ejecutarPlugin(componenteSeleccionado, contenido);
-                PanelTextArchivoProcesado.setContentType("text/html");
-                PanelTextArchivoProcesado.setText(resultado);
-                PanelTextSalidaMensajes.setText("Componente: " + componenteSeleccionado + " ejecutado con exito.");
-            } catch (Exception ex) {
-                PanelTextSalidaMensajes.setText("Error al ejecutar el componente: " + ex.getMessage());
-                PanelTextArchivoInicial.setText("");
+        PanelTextArchivoProcesado.setText("");
+        if (archivoDTO != null) {
+            if (componenteSeleccionado != null) {
+                String contenido = controladorArchivo.getContenido();
+                try {
+                    String resultado = controladorPlugin.ejecutarPlugin(componenteSeleccionado, contenido);
+                    String contenidoFormateado = "<pre>" + resultado + "</pre>";
+                    PanelTextArchivoProcesado.setContentType("text/html");
+                    PanelTextArchivoProcesado.setText(contenidoFormateado);
+                    String mensaje = "\nComponente: " + componenteSeleccionado + " ejecutado con exito.";
+                    mensajesSalida(mensaje, "Correcto");
+                } catch (Exception ex) {
+                    PanelTextArchivoProcesado.setText("");
+                    String mensaje = "\nError al ejecutar el componente: " + ex.getMessage();
+                    mensajesSalida(mensaje, "Error");
+                }
+            } else {
+                String mensaje = "\nNo se ha seleccionado ningún componente para ejecutar.";
+                mensajesSalida(mensaje, "Advertencia");
             }
         } else {
-            PanelTextSalidaMensajes.setText("Elija un componente para cargar");
+            String mensaje = "\nNo se ha cargado ningún archivo para procesar.";
+            mensajesSalida(mensaje, "Advertencia");
         }
     }//GEN-LAST:event_btnEjecutarComponenteActionPerformed
 
@@ -233,10 +262,28 @@ public class Start extends javax.swing.JFrame {
         if (!evt.getValueIsAdjusting()) {
             JList<String> listaComponentes = (JList<String>) evt.getSource();
             componenteSeleccionado = ListaComponentes.getSelectedValue();
-            PanelTextSalidaMensajes.setText(componenteSeleccionado);
+            String mensaje = "\nComponente seleccionado: " + componenteSeleccionado;
+            mensajesSalida(mensaje, "Advertencia");
         }
     }//GEN-LAST:event_ListaComponentesValueChanged
 
+    private void mensajesSalida(String mensaje, String style) {
+        StyledDocument doc = PanelTextSalidaMensajes.getStyledDocument();
+        Style estilo = null; // Estilo por defecto
+
+        if (style.equals("Correcto")) {
+            estilo = PanelTextSalidaMensajes.getStyle("Correcto");
+        } else if (style.equals("Error")) {
+            estilo = PanelTextSalidaMensajes.getStyle("Error");
+        } else if (style.equals("Advertencia")) {
+            estilo = PanelTextSalidaMensajes.getStyle("Advertencia");
+        }
+        try {
+            doc.insertString(doc.getLength(), "\n" + mensaje, estilo);
+        } catch (BadLocationException ex) {
+            System.out.println(ex.toString());
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> ListaComponentes;
     private javax.swing.JPanel PanelArchivoInicial;
@@ -247,7 +294,7 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelSalidaMensajes;
     private javax.swing.JTextPane PanelTextArchivoInicial;
-    private javax.swing.JTextPane PanelTextArchivoProcesado;
+    private javax.swing.JEditorPane PanelTextArchivoProcesado;
     private javax.swing.JTextPane PanelTextSalidaMensajes;
     private javax.swing.JButton btnCargarArchivo;
     private javax.swing.JButton btnCargarComponente;
@@ -258,9 +305,9 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     // End of variables declaration//GEN-END:variables
 
 }

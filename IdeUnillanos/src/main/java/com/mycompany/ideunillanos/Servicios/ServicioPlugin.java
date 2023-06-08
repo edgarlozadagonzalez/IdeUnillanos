@@ -18,7 +18,7 @@ import java.util.Map;
 public class ServicioPlugin implements IServicioPlugin {
 
     private Map<String, File> plugins = new HashMap<>();
-    private final String rutaPlugins = "../plugins/";
+    private final String rutaPlugins = "../Componentes/";
     private Archivo archivo;
 
     @Override
@@ -26,6 +26,11 @@ public class ServicioPlugin implements IServicioPlugin {
         archivo = new Archivo(archivoDTO.getArchivoDTO());
         try {
             Path ruta = archivo.getPath();
+            
+            if (!archivo.getExtension().equals("jar")) {
+                throw new IOException("El componente debe ser de extensión .jar");
+            }
+            
             String rutaAbsolutaPlugins = new File(rutaPlugins).getAbsolutePath();
             File directorioPlugins = new File(rutaAbsolutaPlugins);
             if (!directorioPlugins.exists()) {
