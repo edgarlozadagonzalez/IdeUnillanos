@@ -14,7 +14,6 @@ public class ControladorPlugin {
     public ControladorPlugin() {
         this.serviciosPlugin = new ServiciosPlugin();
     }
-    
 
     public static ControladorPlugin getInstance() {
         if (controladorPlugin == null) {
@@ -24,10 +23,14 @@ public class ControladorPlugin {
     }
 
     public void cargarPlugin(ArchivoDTO archivoDTO) throws IOException {
-       serviciosPlugin.cargar(archivoDTO);
+        serviciosPlugin.cargar(archivoDTO);
     }
-    
-    public Map<String, File> obtenerPlugins(){
-       return serviciosPlugin.obtenerPlugins();
+
+    public Map<String, File> obtenerPlugins() {
+        return serviciosPlugin.obtenerPlugins();
+    }
+
+    public String ejecutarPlugin(String nombrePlugin, String contenido) throws Exception {
+        return serviciosPlugin.ejecutarPlugin(nombrePlugin, contenido);
     }
 }

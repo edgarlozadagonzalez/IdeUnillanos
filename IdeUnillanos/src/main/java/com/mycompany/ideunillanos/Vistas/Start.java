@@ -7,8 +7,11 @@ import com.mycompany.ideunillanos.DTO.ArchivoDTO;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Start extends javax.swing.JFrame {
@@ -16,6 +19,7 @@ public class Start extends javax.swing.JFrame {
     private ArchivoDTO archivoDTO;
     private final ControladorArchivo controladorArchivo = ControladorArchivo.getInstance();
     private final ControladorPlugin controladorPlugin = ControladorPlugin.getInstance();
+    private String componenteSeleccionado;
 
     public Start() {
         initComponents();
@@ -111,6 +115,11 @@ public class Start extends javax.swing.JFrame {
         PanelComponentesCargados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PanelComponentesCargados.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        ListaComponentes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ListaComponentesValueChanged(evt);
+            }
+        });
         jScrollPane3.setViewportView(ListaComponentes);
 
         PanelComponentesCargados.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 320, 360));
@@ -203,8 +212,28 @@ public class Start extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCargarComponenteActionPerformed
 
     private void btnEjecutarComponenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarComponenteActionPerformed
-        // TODO add your handling code here:
+        if (archivoDTO.getArchivoDTO() != null) {
+            String contenido = ControladorArchivo.getInstance().getContenido();
+            try {
+                String resultado = controladorPlugin.ejecutarPlugin(componenteSeleccionado, contenido);
+                PanelTextArchivoProcesado.setText(resultado);
+                PanelTextSalidaMensajes.setText("Componente: "+componenteSeleccionado+" ejecutado con exito.");
+            } catch (Exception ex) {
+                PanelTextSalidaMensajes.setText("Error al ejecutar el componente: " + ex.getMessage());
+                PanelTextArchivoInicial.setText("");
+            }
+        } else {
+            PanelTextSalidaMensajes.setText("Elija un componente para cargar");
+        }
     }//GEN-LAST:event_btnEjecutarComponenteActionPerformed
+
+    private void ListaComponentesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListaComponentesValueChanged
+        if (!evt.getValueIsAdjusting()) {
+            JList<String> listaComponentes = (JList<String>) evt.getSource();
+            componenteSeleccionado = ListaComponentes.getSelectedValue();
+            PanelTextSalidaMensajes.setText(componenteSeleccionado);
+        }
+    }//GEN-LAST:event_ListaComponentesValueChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> ListaComponentes;
