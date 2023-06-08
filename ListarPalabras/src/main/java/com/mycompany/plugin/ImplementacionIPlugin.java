@@ -1,11 +1,12 @@
 package com.mycompany.plugin;
 
 import com.mycompany.api.IPlugin;
+import com.mycompany.listarPalabras.ListarPalabrasPlugin;
 
 public class ImplementacionIPlugin implements IPlugin{
 
     @Override
     public String ejecutarPlugin(String contenido) {      
-        return "respuesta";
+        return ListarPalabrasPlugin.listarPalabrasEncontradas(contenido);
     }
 }
