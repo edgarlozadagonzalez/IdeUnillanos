@@ -9,8 +9,6 @@ public class ImplementacionIPlugin implements IPlugin {
 
     @Override
     public String ejecutarPlugin(String contenido) {
-        cadena = new BuscarTextoPlugin().buscarTexto(contenido);
-        return cadena;
+        return cadena = new BuscarTextoPlugin().buscarTexto(contenido);
     }
-
 }
